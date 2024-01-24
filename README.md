@@ -4,4 +4,4 @@ Also searched article will stored in User's Local Storage. So, he/she can access
 
 This app is built using React, redux toolkit, Tailwind CSS, Typescript ans Browser Storage API.
 
-Deployed URL -
+Deployed URL - https://ai-summarize-xi.vercel.app/
