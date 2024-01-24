@@ -4,27 +4,29 @@ import copy from '../assets/copy.svg';
 import tick from '../assets/tick.svg';
 import loader from '../assets/loader.svg';
 import { useLazyArticleQuery } from '../services/article';
+import { articleType } from '../vite-env';
 
 const Demo = () => {
-	const [article, setArticle] = useState({
+	const [article, setArticle] = useState<articleType>({
 		url: '',
 		summary: '',
 	});
-	const [allArticles, setAllArticles] = useState([]);
-	const [copied, setCopied] = useState('');
+	const [allArticles, setAllArticles] = useState<articleType[]>([]);
+	const [copied, setCopied] = useState<boolean | string>('');
 
 	const [getArticle, { error, isFetching }] = useLazyArticleQuery();
 
 	useEffect(() => {
-		const articlesFromLocalStorage = JSON.parse(localStorage.getItem('articles'));
-
-		if (articlesFromLocalStorage) {
-			setAllArticles(articlesFromLocalStorage);
-			console.log(articlesFromLocalStorage);
+		if (localStorage.getItem('articles')) {
+			const articlesFromLocalStorage = JSON.parse(localStorage.getItem('articles'));
+			if (articlesFromLocalStorage) {
+				setAllArticles(articlesFromLocalStorage);
+				// console.log(articlesFromLocalStorage);
+			}
 		}
 	}, []);
 
-	const handleSubmit = async (e) => {
+	const handleSubmit = async (e: { preventDefault: () => void }) => {
 		e.preventDefault();
 		const { data } = await getArticle({ articleUrl: article.url });
 		const articleData = data.article;
@@ -41,7 +43,7 @@ const Demo = () => {
 		}
 	};
 
-	const handleCopy = (copyUrl) => {
+	const handleCopy = (copyUrl: string) => {
 		setCopied(copyUrl);
 		navigator.clipboard.writeText(copyUrl);
 		setTimeout(() => setCopied(false), 3000);
