@@ -17,16 +17,14 @@ const Demo = () => {
 	const [getArticle, { error, isFetching }] = useLazyArticleQuery();
 
 	useEffect(() => {
-		if (localStorage.getItem('articles')) {
-			const articlesFromLocalStorage = JSON.parse(localStorage.getItem('articles'));
-			if (articlesFromLocalStorage) {
-				setAllArticles(articlesFromLocalStorage);
-				// console.log(articlesFromLocalStorage);
-			}
+		const articlesFromLocalStorage = JSON.parse(localStorage.getItem('articles') || '{}');
+		if (articlesFromLocalStorage) {
+			setAllArticles(articlesFromLocalStorage);
+			// console.log(articlesFromLocalStorage);
 		}
 	}, []);
 
-	const handleSubmit = async (e: { preventDefault: () => void }) => {
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const { data } = await getArticle({ articleUrl: article.url });
 		const articleData = data.article;
@@ -112,9 +110,9 @@ const Demo = () => {
 					/>
 				) : error ? (
 					<p className='font-inter font-bold text-black text-center'>
-						Well, that wasn't supposed to happen...
+						Something went wrong
 						<br />
-						<span className='font-satoshi font-normal text-gray-700'>{error?.data}</span>
+						<span className='font-satoshi font-normal text-gray-700'>Please check Url and retry</span>
 					</p>
 				) : (
 					article.summary && (
