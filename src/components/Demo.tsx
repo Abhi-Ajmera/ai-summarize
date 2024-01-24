@@ -17,7 +17,7 @@ const Demo = () => {
 	const [getArticle, { error, isFetching }] = useLazyArticleQuery();
 
 	useEffect(() => {
-		const articlesFromLocalStorage = JSON.parse(localStorage.getItem('articles') || '{}');
+		const articlesFromLocalStorage = JSON.parse(localStorage.getItem('articles') || '[]');
 		if (articlesFromLocalStorage) {
 			setAllArticles(articlesFromLocalStorage);
 			// console.log(articlesFromLocalStorage);
@@ -46,6 +46,8 @@ const Demo = () => {
 		navigator.clipboard.writeText(copyUrl);
 		setTimeout(() => setCopied(false), 3000);
 	};
+
+	console.log(allArticles);
 
 	return (
 		<section className='mt-8 w-full max-w-xl'>
